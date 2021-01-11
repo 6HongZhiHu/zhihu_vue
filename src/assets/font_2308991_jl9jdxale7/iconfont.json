@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1440923",
+      "name": "右箭头",
+      "font_class": "youjiantou",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "451564",
+      "name": "积分",
+      "font_class": "jifen",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "4879718",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "5922261",
+      "name": "145_服务中心",
+      "font_class": "_fuwuzhongxin",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "7991679",
+      "name": "手机",
+      "font_class": "shouji",
+      "unicode": "e66a",
+      "unicode_decimal": 58986
+    },
+    {
+      "icon_id": "12592404",
+      "name": "个人中心",
+      "font_class": "gerenzhongxin",
+      "unicode": "e74c",
+      "unicode_decimal": 59212
+    },
+    {
+      "icon_id": "16401894",
+      "name": "会员",
+      "font_class": "biaoqiankuozhan_huiyuan-363",
+      "unicode": "ebdc",
+      "unicode_decimal": 60380
+    },
+    {
       "icon_id": "5342820",
       "name": "筛选",
       "font_class": "lvsefenkaicankaoxianban-",

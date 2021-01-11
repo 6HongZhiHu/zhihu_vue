@@ -65,7 +65,15 @@ export default {
   methods: {
     goto(path){
       //路由跳转
-      this.$router.replace(path)
+      //解决跳转到当前路径路由的警告bug
+      //1.点击不是当前项，路由跳转
+      if(path !== this.$route.path){
+        this.$router.replace(path)
+      }
+      //2.如果点击当前项刷新界面
+      else{
+        window.location = path //发送一般http请求 ===》整个界面会刷新显示
+      }
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -102,7 +110,7 @@ export default {
 
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
-   @import "../../src/assets/stylus/mixins.styl"
+   @import "../../../src/assets/stylus/mixins.styl"
   .footer-guide
     top-border-1px(#cccccc)
     display flex
@@ -117,6 +125,7 @@ export default {
       width 25%
       flex-direction column
       text-align center
+      background #ffffff
       &.on
         color $green
       span

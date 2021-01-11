@@ -28,10 +28,10 @@ module.exports = {
       // },
 
 
-      '/gh': {
-        target: 'https://api.github.com', // 转发的目标地址
+      '/api': {
+        target: 'http://localhost:4000', // 转发的目标地址
         pathRewrite: {
-          '^/gh' : ''  // 转发请求时去除路径前面的/api
+          '^/api' : ''  // 转发请求时去除路径前面的/api
         },
         changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
       }
