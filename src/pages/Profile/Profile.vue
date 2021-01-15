@@ -11,18 +11,18 @@
           <span class="header_title_text">我的</span>
         </a>
       </Header>
-      <section class="profile-number" @click="$router.push('/login')">
+      <section class="profile-number" @click='$router.push(user._id ? "/userinfo" : "/login")'>
         <a href="javascript:" class="profile-link">
           <div class="profile_image">
             <i class="iconfont icon-gerenzhongxin"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">登录/注册</p>
-            <p>
+            <p class="user-info-top" v-if="!user.phone">{{user.name ? user.name : '登录/注册'}}</p>
+            <p v-if="!user.name">
               <span class="user-icon">
                 <i class="iconfont icon-shouji"></i>
               </span>
-              <span class="icon-mobile-number">暂无绑定手机号</span>
+              <span class="icon-mobile-number" >{{user.phone ? user.phone : "暂无手机号"}}</span>
             </p>
           </div>
           <span class="arrow">
@@ -105,6 +105,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import {mapState} from 'vuex';
 
 export default {
   name:"Profile",
@@ -118,7 +119,9 @@ export default {
     };
   },
   //计算属性 类似于data概念
-  computed: {},
+  computed: {
+    ...mapState(["user"])
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合

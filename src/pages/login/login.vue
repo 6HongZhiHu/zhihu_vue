@@ -5,49 +5,114 @@
         <div class="login_header">
           <h2 class="login_logo">HZH外卖</h2>
           <div class="login_header_title">
-            <a href="javascript:;" class="on">短信登录</a>
-            <a href="javascript:;">密码登录</a>
+            <a href="javascript:;" :class="{on:isShowSms}" @click="isShowSms=true">短信登录</a>
+            <a href="javascript:;" :class="{on:!isShowSms}" @click="checkLogin">密码登录</a>
           </div>
         </div>
         <div class="login_content">
           <form>
-            <div class="on">
+            <div :class="{on:isShowSms}">
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机号">
-                <button disabled="disabled" class="get_verification">获取验证码</button>
+                <input 
+                  type="tel" 
+                  maxlength="11" 
+                  placeholder="手机号" 
+                  v-model="phone"
+                  v-validate="'required|mobile'"
+                  name="phone"
+                >
+                <button 
+                  :disabled="!isRightPhone || jsTime>0" 
+                  class="get_verification"
+                  :class="{right_phone_number:isRightPhone && jsTime<=0}"
+                  @click.prevent="sendCode"
+                >{{jsTime>0 ? `已发送验证码（${jsTime}）s`:"获取验证码" }}</button>
+                <span style="color:red" v-show="errors.has('phone')">
+                  {{errors.first("phone")}}
+                </span>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码">
+                <input 
+                  type="tel" 
+                  maxlength="8" 
+                  placeholder="验证码"
+                  v-model="code"
+                  v-validate="{required:true,regex:/^\d{6}$/}"
+                  name="code"
+                >
+                <span style="color:red" v-show="errors.has('code')">
+                  {{errors.first("code")}}
+                </span>
               </section>
               <section class="login_hint">
-                温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
+                温馨提示：未注册HZH外卖帐号的手机号，登录时将自动注册，且代表已同意
                 <a href="javascript:;">《用户服务协议》</a>
               </section>
             </div>
-            <div>
+            <div :class="{on:!isShowSms}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                  <input 
+                    type="tel" 
+                    maxlength="11" 
+                    placeholder="手机/邮箱/用户名"
+                    v-model="name"
+                    v-validate="'required'"
+                    name="name"
+                  >
+                  <span style="color: red;" v-show="errors.has('name')">{{ errors.first('name') }}</span>
                 </section>
                 <section class="login_verification">
-                  <input type="tel" maxlength="8" placeholder="密码">
-                  <div class="switch_button off">
-                    <div class="switch_circle"></div>
-                    <span class="switch_text">...</span>
+                  <input 
+                    :type="isShowPwd ? 'text' : 'password'"  
+                    maxlength="8" 
+                    placeholder="密码"
+                    v-model="pwd" 
+                    name="pwd" 
+                    v-validate="'required'"
+                  >
+                  <div 
+                    class="switch_button" 
+                    @click="isShowPwd=!isShowPwd"
+                    :class="isShowPwd ? 'on':'off'"
+                  >
+                    <div class="switch_circle" :class="isShowPwd ? 'right':''"></div>
+                    <span class="switch_text">HZH</span>
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <input 
+                    type="text" 
+                    maxlength="11" 
+                    placeholder="验证码"
+                    v-model="captcha"
+                    name="captcha" 
+                    v-validate="{required: true,regex: /^[0-9a-zA-Z]{4}$/}"
+                  >
+                  <!-- 当前发送的不是ajax请求，没有跨域 -->
+                  <img 
+                    class="get_verification" 
+                    src="http://localhost:4000/captcha" 
+                    alt="captcha"
+                    @click="updateYzm"
+                    ref="captcha"
+                  >
+                  <span 
+                    style="color: red;" 
+                    v-model="captcha"
+                    v-show="errors.has('captcha')"
+                  >
+                    {{ errors.first('captcha') }}
+                  </span>
                 </section>
               </section>
             </div>
-            <button class="login_submit">登录</button> 
+            <button class="login_submit" @click.prevent="login">登录</button> 
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
-        <a href="javascript:" class="go_back">
-          <i class="iconfont icon-jiantou2"></i>
+        <a href="javascript:" class="go_back" @click="$router.back()">
+          <i class="iconfont icon-arrow-left"></i>
         </a>
       </div>
     </section>
@@ -57,6 +122,8 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import {reqMsg,reqPwdLogin,reqSmsLogin} from '../../api/index';
+import { Toast,MessageBox  } from 'mint-ui';
 
 export default {
   name:"Login",
@@ -66,16 +133,98 @@ export default {
   data() {
   //这里存放数据
     return {
-      
+      //是否显示手机短信登录
+      isShowSms:true,
+      phone:"",
+      //显示密码是否可见
+      isShowPwd:false,
+      //用户名
+      name:"",
+      //短信验证码
+      code:"",
+      //密码
+      pwd:"",
+      //用户验证码
+      captcha:"",
+      jsTime:0
     };
   },
   //计算属性 类似于data概念
-  computed: {},
+  computed: {
+    isRightPhone(){
+      return /^1\d{10}$/.test(this.phone)
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
-    
+    checkLogin(){
+      this.isShowSms=false;
+      this.updateYzm();
+    },
+    async sendCode(){
+      //绑定的点击事件阻止事件冒泡
+      //初始显示倒计时
+      this.jsTime = 10;
+      let timeId = setInterval(()=>{
+        this.jsTime--;
+        if(this.jsTime <= 0){
+          this.jsTime = 0;
+          clearInterval(timeId)
+        }
+      },1000) 
+      //发请求
+      let result = await reqMsg(this.phone);
+      console.log(result);
+      if(result.code === 0){
+        Toast({
+          message:"发送成功"
+        })
+      }
+    },
+    async login(){
+      //console.log(this)
+      // 进行前台表单验证
+      let names
+      if (this.isShowSms) {
+        names = ['phone', 'code']
+      } else {
+        names = ['name', 'pwd', 'captcha']
+      }
+      //对指令的所有表单项进行验证
+      const success = await this.$validator.validateAll(names);
+      //console.log(success,names)
+      let result;
+      if(success){
+        let {name,phone,code,pwd,captcha} = this;
+        if(this.isShowSms){
+          //短信登录
+          result = await reqSmsLogin({phone,code})
+        }else{
+          //密码登录
+          result = await reqPwdLogin({name,pwd,captcha});
+          //this.updateYzm(); //更新图形验证码
+        }
+      }else return
+      //console.log("登录消息==》",result,success)
+      if(result.code === 0){
+        let user = result.data;
+        Toast({
+          message:"登录成功"
+        });
+        this.$store.dispatch("saveUser",result) //将user信息保存在vuex中
+        this.updateYzm();
+        this.$router.replace({path:"/profile"})
+      }else{
+        this.updateYzm();
+        MessageBox('提示', result.msg);
+      }
+    },
+    updateYzm(){
+      //随机加一个get请求参数，对请求没有影响，且不会用浏览器缓存图片
+      this.$refs.captcha.src = "http://localhost:4000/captcha?t=" + Date.now();
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -110,6 +259,9 @@ export default {
 }
 </script>
 <style scoped>
+.right_phone_number{
+  color: black !important;
+}
 </style>
 
 <style lang="stylus" scoped>
@@ -173,6 +325,7 @@ export default {
               color #ccc
               font-size 14px
               background transparent
+             
           .login_verification
             position relative
             margin-top 16px
@@ -212,6 +365,8 @@ export default {
                 background #fff
                 box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                 transition transform .3s
+                &.right
+                  transform translateX(27px)
           .login_hint
             margin-top 12px
             color #999
@@ -239,11 +394,11 @@ export default {
         color #999
     .go_back
       position absolute
-      top 5px
-      left 5px
-      width 30px
-      height 30px
+      top 8px
+      left 8px
+      width 40px
+      height 40px
       >.iconfont
         font-size 20px
-        color #999
+        color #000
 </style>

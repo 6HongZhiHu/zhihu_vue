@@ -6,7 +6,9 @@
             <i class="iconfont icon-lvsefenkaicankaoxianban-5"></i>
           </span>
           <span class="header_login" slot="right">
-            <span class="header_login_text" @click="dome">登录|注册</span>
+            <span class="header_login_text" @click="dome">
+              {{user ? user.name : '登录|注册'}}
+            </span>
           </span>
         </Header>
         <!--首页导航-->
@@ -51,13 +53,7 @@
                     </section>
                     <section class="shop_rating_order">
                       <section class="shop_rating_order_left">
-                        <div class="star star-24">
-                          <span class="star-item on"></span>
-                          <span class="star-item on"></span>
-                          <span class="star-item on"></span>
-                          <span class="star-iStem half"></span>
-                          <span class="star-item off"></span>
-                        </div>
+                        <Star :score="shop.rating" :size="24"></Star>
                         <div class="rating_section">
                           {{shop.rating}}
                         </div>
@@ -117,7 +113,7 @@ export default {
   //计算属性 类似于data概念
   computed: {
     // ...mapState({address:"address"})
-    ...mapState(["address","categorys","shops"]),
+    ...mapState(["address","categorys","shops","isLogin","user"]),
     //包含所有分类的二维数组
     categorysArr(){
       let {categorys} = this;
@@ -205,7 +201,8 @@ export default {
    });
    * */
     this.$store.dispatch("getShops")
-    await this.$store.dispatch("getCategorys")
+    await this.$store.dispatch("getCategorys");
+    await this.$store.dispatch("getAddress");
     SwiperCore.use([Pagination]); //注册模块
     //加载swiper轮播图 swiper对象必须在列表数据显示之后创建
     new Swiper ('.swiper-container', {

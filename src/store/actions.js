@@ -1,6 +1,6 @@
 //一个包含N个间接用于更新数据的方法对象
   //可以包含异步代码和逻辑代码
-  import {
+import {
     reqAddress,
     reqCategprys,
     reqShops
@@ -9,7 +9,9 @@
   import {
     RECEIVE_ADDRESS,
     RECEIVE_SHOPS,
-    RECEIVE_CATEGORYS
+    RECEIVE_CATEGORYS,
+    RECEIVE_TOKEN,
+    RECEIVE_USER
   } from './types';
 
 
@@ -48,5 +50,20 @@
         const shops = result.data;
         commit(RECEIVE_SHOPS,shops)
       }
+    },
+    saveUser({commit},user){
+      const token = user.token;
+      const data = user.data;
+      //将token保存在local
+      localStorage.setItem("token_key",token);
+      
+      localStorage.setItem("user_key",JSON.stringify(data));
+      //将token保存state
+      commit(RECEIVE_TOKEN,token)
+      //将user保存state
+      commit(RECEIVE_USER,data)
+    },
+    getUser(){
+
     }
   }

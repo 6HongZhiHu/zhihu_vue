@@ -4,9 +4,18 @@ import router from './router'
 import store from './store'
 import 'lib-flexible';
 import Header from './components/header/Header.vue';
+import Star from './components/star/star.vue';
+import './validate';
+// import {to} from 'mint-ui';
+
+
+// Vue.component(Indicator.name, Indicator )
+// Vue.use(mint-ui)
+
 
 //注册全局组件
 Vue.component("Header",Header)
+Vue.component("Star",Star)
 
 Vue.config.productionTip = false
 
