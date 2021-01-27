@@ -41,3 +41,22 @@ export const reqPwdLogin = ({name,pwd,captcha})=>{
 export const reqSmsLogin = ({phone,code})=>{
   return myAxios.post("/login_sms",{phone,code})
 }
+
+//7.商铺信息
+export const reqGoods = ()=>{
+  return myAxios.get("/goods")
+}
+
+//8.商铺信息
+export const reqInfo = ()=>{
+  return myAxios.get("/info")
+}
+
+//9.商铺信息
+export const reqRatings = ()=>{
+  return myAxios.get("/ratings")
+}
+
+// myAxios.get("/info").then(res => {
+//   console.log("res",res);
+// })

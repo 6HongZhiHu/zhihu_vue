@@ -4,24 +4,33 @@ import router from './router'
 import store from './store'
 import 'lib-flexible';
 import Header from './components/header/Header.vue';
+import CartControl from './components/CartControl/CartControl.vue';
 import Star from './components/star/star.vue';
+import ShopCart from './components/ShopCart/ShopCart.vue';
 import './validate';
-// import {to} from 'mint-ui';
+import {Button} from 'mint-ui';
+import i18n from './i18n'
+//import mintUi from 'mint-ui';
+import "./mock/mock-server";
 
 
-// Vue.component(Indicator.name, Indicator )
-// Vue.use(mint-ui)
+Vue.component(Button.name, Button )
+//Vue.use(mintUi)
 
 
 //注册全局组件
 Vue.component("Header",Header)
 Vue.component("Star",Star)
+Vue.component("CartControl",CartControl)
+Vue.component("ShopCart",ShopCart)
 
 Vue.config.productionTip = false
 
 new Vue({
   //所有组件都能看到 $router和$route <router-link> 和 <router-view/>
   router,
-  store, 
+
+  store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

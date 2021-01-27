@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1012132",
+      "name": "加",
+      "font_class": "wuuiconxiangjifangda",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "1330740",
+      "name": "减",
+      "font_class": "jian1",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    },
+    {
+      "icon_id": "12728683",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "16350239",
+      "name": "加",
+      "font_class": "jia",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
       "icon_id": "430539",
       "name": "左箭头",
       "font_class": "arrow-left",

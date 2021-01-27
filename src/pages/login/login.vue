@@ -107,13 +107,18 @@
                 </section>
               </section>
             </div>
-            <button class="login_submit" @click.prevent="login">登录</button> 
+            <button class="login_submit" @click.prevent="login">{{$t("login_login")}}</button> 
           </form>
-          <a href="javascript:;" class="about_us">关于我们</a>
+          <a href="javascript:;" class="about_us">{{$t("login_aboutUs")}}</a>
         </div>
-        <a href="javascript:" class="go_back" @click="$router.back()">
+        <a href="javascript:" class="go_back" @click="$router.replace('/profile')">
           <i class="iconfont icon-arrow-left"></i>
         </a>
+        <mt-button
+          size="small" 
+          @click="toggleLanguage"
+          class="check"
+        >check/切换语言</mt-button>
       </div>
     </section>
   </div>
@@ -224,6 +229,14 @@ export default {
     updateYzm(){
       //随机加一个get请求参数，对请求没有影响，且不会用浏览器缓存图片
       this.$refs.captcha.src = "http://localhost:4000/captcha?t=" + Date.now();
+    },
+    toggleLanguage(){
+      //根据当前语言得到新的语言
+      let locale = this.$i18n.locale === "en" ? "zh_CN" : "en";
+      this.$i18n.locale = locale;
+      //将新的语言保存到local
+      localStorage.setItem("locale_key",locale);
+      
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -261,6 +274,10 @@ export default {
 <style scoped>
 .right_phone_number{
   color: black !important;
+}
+.check{
+  position: relative;
+  top: 50px;
 }
 </style>
 

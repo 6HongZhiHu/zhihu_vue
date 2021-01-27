@@ -13,6 +13,7 @@ module.exports = {
       }
     }
   },
+
   devServer: {
     //port: 8080, //项目端口号
     open: true, // 自动打开浏览器
@@ -37,4 +38,13 @@ module.exports = {
       }
     },
   },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'zh_CN',
+      fallbackLocale: 'zh_CN',
+      localeDir: 'locales',
+      enableInSFC: false
+    }
+  }
 }

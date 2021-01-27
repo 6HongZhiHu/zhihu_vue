@@ -98,6 +98,9 @@
           </div>
         </a>
       </section>
+      <div v-show="user.name" style="width：100%">
+        <mt-button type="danger" size="large" @click="logOut">退出登录</mt-button>
+      </div>
     </section>
   </div>
 </template>
@@ -106,11 +109,14 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import {mapState} from 'vuex';
+import {MessageBox} from 'mint-ui';
 
 export default {
   name:"Profile",
   //import引入的组件需要注入到对象中才能使用
-  components: {},
+  components: {
+    
+  },
   props: {},
   data() {
   //这里存放数据
@@ -120,13 +126,24 @@ export default {
   },
   //计算属性 类似于data概念
   computed: {
-    ...mapState(["user"])
+    ...mapState({
+      user:state => state.user.user,
+    })
   },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
-    
+    logOut(){
+      MessageBox.confirm("确认退出？").then(
+      ()=>{
+        //确认回调函数
+        this.$store.commit("deleteUser")
+      },
+      ()=>{
+        //取消回调函数
+      })
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {

@@ -37,7 +37,12 @@
           </div>
           <div class="shop_container">
             <ul class="shop_list" v-if="shops.length>0">
-              <li class="shop_li border-1px" v-for="shop in shops" :key="shop.id">
+              <li 
+                class="shop_li border-1px" 
+                v-for="shop in shops" 
+                :key="shop.id"
+                @click="$router.push('/shop')"
+              >
                 <a>
                   <div class="shop_left">
                     <img class="shop_img" :src="require('./images/shop/'+shop.image_path)">
@@ -97,6 +102,7 @@ import {mapState} from 'vuex';
 //import _ from 'lodash';
 //按需引入lodash的chunk函数 生成指定的二维数组
 import chunk from 'lodash/chunk';
+import state from '../../store/state';
 
 
 export default {
@@ -113,7 +119,14 @@ export default {
   //计算属性 类似于data概念
   computed: {
     // ...mapState({address:"address"})
-    ...mapState(["address","categorys","shops","isLogin","user"]),
+    ...mapState({
+      //["address","categorys","shops","isLogin","user"]
+      address:state => state.msite.address,
+      shops:state => state.msite.shops,
+      categorys:state => state.msite.categorys,
+      user:state => state.user.user,
+    }),
+
     //包含所有分类的二维数组
     categorysArr(){
       let {categorys} = this;

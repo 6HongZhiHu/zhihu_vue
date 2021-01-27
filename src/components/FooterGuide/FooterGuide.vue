@@ -8,7 +8,7 @@
       <span>
         <i class="iconfont icon-lvsefenkaicankaoxianban-14"></i>
       </span>
-      <span>首页</span>
+      <span>{{$t("footer_home")}}</span>
     </span>
     <span 
       class="guide-item" 
@@ -18,7 +18,7 @@
       <span>
         <i class="iconfont icon-lvsefenkaicankaoxianban-5"></i>
       </span>
-      <span>搜索</span>
+      <span>{{$t("footer_search")}}</span>
     </span>
     <span 
       class="guide-item" 
@@ -28,7 +28,7 @@
       <span>
         <i class="iconfont icon-lvsefenkaicankaoxianban-6"></i>
       </span>
-      <span>订单</span>
+      <span>{{$t("footer_order")}}</span>
     </span>
     <span 
       class="guide-item" 
@@ -38,7 +38,7 @@
       <span>
         <i class="iconfont icon-lvsefenkaicankaoxianban-4"></i>
       </span>
-      <span>个人</span>
+      <span>{{$t("footer_own")}}</span>
     </span>
   </div>
 </template>

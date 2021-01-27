@@ -29,7 +29,7 @@ instance.interceptors.request.use((config)=>{
   if(data instanceof Object){
     config.data = qs.stringify(data)
   }
-  const token = vuex.state.token;
+  const token = vuex.state.user.token;
   const nedCheck = config.headers.nedCheck;
 
   if (token ) { // 判断是否存在token，如果存在的话，则每个http header都加上token
@@ -52,14 +52,19 @@ instance.interceptors.response.use(
     console.log("触发响应拦截器...")
     //这里是返回token信息的错误
     //403是token统一返回的错误
+    
     if(res.data.status===403){
+      console.log("403")
       Toast({
         message:res.data.msg
       });
       //删除用户操作 
       vuex.commit("deleteUser");
       //跳转到登录
-      router.replace("/login");
+      if(router.currentRoute.path !== "/login"){
+        router.replace("/login");
+      }
+      
       return new Promise(()=>{})
     }else{
       return res.data;
@@ -72,9 +77,16 @@ instance.interceptors.response.use(
     Indicator.close();
     //没发请求的错误
     if(!res){
-      router.replace("/login")
-      //这里是我在上面处理抛出的错误
-      Toast(err.message)
+      //console.log(err)
+      //console.log("err--------------")
+      //console.log(router)
+      if(router.currentRoute.path !== "/login"){
+        router.replace(path);
+         //这里是我在上面处理抛出的错误
+        Toast(err.message);
+      }
+      //router.replace("/login")
+     
     }else{
       //发了请求的错误
       //这个是请求失败的错误
