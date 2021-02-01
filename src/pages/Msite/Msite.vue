@@ -41,7 +41,7 @@
                 class="shop_li border-1px" 
                 v-for="shop in shops" 
                 :key="shop.id"
-                @click="$router.push('/shop')"
+                @click="tiao(shop.id)"
               >
                 <a>
                   <div class="shop_left">
@@ -182,6 +182,10 @@ export default {
   },
   //方法集合
   methods: {
+    tiao(id){
+      console.log("id",id)
+      this.$router.push(`/shop/${id}`)
+    },
     dome(){
       //console.log(this.address)
     }

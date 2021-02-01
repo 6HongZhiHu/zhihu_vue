@@ -50,25 +50,26 @@ export default [
     component: Login
   },
   {
-    path: '/shop',
+    path: '/shop/:id',
+    props: true, // 将所有params参数转换成标签属性传递给子路由组件
     //name: 'Shop',
     component: Shop,
     children:[
       {
-        path: '/shop/info',
+        path: 'info',
         component: Info
       },
       {
-        path: '/shop/ratings',
+        path: 'ratings',
         component: Ratings
       },
       {
-        path: '/shop/goods',
+        path: 'goods',
         component: Goods
       },
       {
         path:"",
-        redirect:"/shop/goods"
+        redirect:"goods"
       }
     ]
   },

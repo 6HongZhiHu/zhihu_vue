@@ -9,3 +9,4 @@ export const RECEIVE_RATINGS = "receive_ratings"
 export const RECEIVE_INFO = "receive_info"
 export const RECEIVE_JIA = "receive_jia"
 export const RECEIVE_JIAN = "receive_jian"
+export const RECEIVE_SHOP = "receive_shop" //保存商家详细信息

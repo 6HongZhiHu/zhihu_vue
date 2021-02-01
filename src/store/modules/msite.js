@@ -36,7 +36,7 @@ export default{
       //发送异步请求
       const {latitude,longitude} = state;
       const result = await reqAddress(longitude,latitude)
-      console.log(result)
+      //console.log(result)
       //请求成功后提交给mutation
       if(result && result.code === 0){
         const address = result.data;

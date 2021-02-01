@@ -12,10 +12,16 @@ import {Button} from 'mint-ui';
 import i18n from './i18n'
 //import mintUi from 'mint-ui';
 import "./mock/mock-server";
+import lazyLoad from 'vue-lazyload';
+import loading from '../src/assets/image/loading.gif';
 
 
 Vue.component(Button.name, Button )
 //Vue.use(mintUi)
+Vue.use(lazyLoad, {
+  //error: 'dist/error.png',
+  loading
+}) //增加一个全局指令v-lazy
 
 
 //注册全局组件

@@ -65,7 +65,7 @@ export default {
   computed: {
     ...mapState({
       cartFoods:state => state.shop.cartFoods,
-      info:state=>state.shop.info
+      info:state=>state.shop.shop.info || {}
     }),
     ...mapGetters([
       "totalCount","totalPrice"

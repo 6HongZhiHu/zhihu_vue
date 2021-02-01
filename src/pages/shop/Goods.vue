@@ -12,7 +12,7 @@
               <img
                 class="icon"
                 :src="g.icon"
-                v-if="g.icon"
+                v-show="g.icon"
               />
               {{g.name}}
             </span>
@@ -46,7 +46,7 @@
                   </div>
                   <div class="price">
                     <span class="now">￥{{f.price}}</span>
-                    <span class="old" v-if="f.oldPrice">￥{{f.oldPrice}}</span>
+                    <span class="old" v-show="f.oldPrice">￥{{f.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
                     <CartControl :food="f"/>
@@ -90,7 +90,7 @@ export default {
   //计算属性 类似于data概念
   computed: {
     ...mapState({
-      goods:state => state.shop.goods
+      goods:state => state.shop.shop.goods || []
     }),
     CurrentIndex(){
 
@@ -111,9 +111,11 @@ export default {
     goods(){
       //监控goods的变化
       //当数据更新了，在dom中渲染后，自动执行该函数
+      console.log("watch====>",this.goods)
       this.$nextTick(()=>{
-        //console.log(11)
+        console.log(11)
         this.initScroll();
+        console.log("夹断")
         this.initTop();     
       })
     }
@@ -127,21 +129,38 @@ export default {
       this.$refs.food.toggleShow();
     },
     initScroll(){
-      this.lscroll = new BScroll(this.$refs.left,{
-        click:true
-      });
-      this.rscroll = new BScroll(this.$refs.right,{
-        click:true,
-        probeType : 1 //非实时派发监听事件 必须是触摸滑动才能监视到事件
-        //probeType:2//实时派发高频率 触摸
-        //probeType:3 //实时 触摸 惯性 编码
-      });
-      //scrollEnd滑动结束的监听
-      this.rscroll.on("scrollEnd",({x,y})=>{
-        console.log("xy",x,y)
-        console.log(Math.abs(y))
-        this.scrollY = Math.abs(y);
-      })
+      if (!this.lscroll) {
+        console.log('创建scroll对象')
+        //让手机支持Touch事件
+        this.lscroll = new BScroll(this.$refs.left,{
+          click:true,
+          disableMouse:false,
+          disableTouch:false
+        });
+        //console.log(this.lscroll)
+        this.rscroll = new BScroll(this.$refs.right,{
+          click:true,
+          disableMouse:false,
+          disableTouch:false,
+          probeType : 1 //非实时派发监听事件 必须是触摸滑动才能监视到事件
+          //probeType:2//实时派发高频率 触摸
+          //probeType:3 //实时 触摸 惯性 编码
+        });
+         // 给右侧列表绑定scroll监听
+        this.rscroll.on('scroll', ({x, y}) => {
+          //console.log('给右侧列表绑定scroll监听', x, y)
+          this.scrollY = Math.abs(y)
+        })
+        //scrollEnd滑动结束的监听
+        this.rscroll.on("scrollEnd",({x,y})=>{
+          console.log("scrollEnd滑动结束的监听",x,y)
+          //console.log(Math.abs(y))
+          this.scrollY = Math.abs(y);
+        })
+      }else{
+        this.lscroll.refresh()
+        this.rscroll.refresh()
+      }
     },
     initTop(){
       const tops = [];
@@ -170,6 +189,13 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     //console.log(BScroll())
+    console.log("mounted====>",this.goods)
+    //如果数据有了，直接做初始化的操作、
+    if(this.goods.length>0){
+        console.log(22)
+        this.initScroll();
+        this.initTop();     
+    }
     
   },
   beforeCreate() {}, //生命周期 - 创建之前

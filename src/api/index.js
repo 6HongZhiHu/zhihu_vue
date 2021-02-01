@@ -60,3 +60,8 @@ export const reqRatings = ()=>{
 // myAxios.get("/info").then(res => {
 //   console.log("res",res);
 // })
+
+//10.获取指定的商铺信息
+export const reqShop = (id)=>{
+  return myAxios.get("/shop/"+id)
+}

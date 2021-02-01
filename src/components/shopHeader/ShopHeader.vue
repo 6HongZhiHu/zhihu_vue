@@ -132,7 +132,7 @@ export default {
   //计算属性 类似于data概念
   computed: {
     ...mapState({
-      info:state => state.shop.info,
+      info:state => state.shop.shop.info || {},
     })
   },
   //监控data中的数据变化
