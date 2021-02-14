@@ -101,6 +101,11 @@
       <div v-show="user.name" style="width：100%">
         <mt-button type="danger" size="large" @click="logOut">退出登录</mt-button>
       </div>
+      <div class="btn-abc">
+        <mt-button @click='$router.push("/A")'>A</mt-button>
+        <mt-button @click='$router.push("/B")'>B</mt-button>
+        <mt-button @click='$router.push("/C")'>C</mt-button>
+      </div>
     </section>
   </div>
 </template>
@@ -178,7 +183,16 @@ export default {
 }
 </script>
 <style scoped>
+.btn-abc{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  width: 100%;
+}
+.btn-abc>button{
+  flex: 1;
 
+}
 </style>
 
 <style lang="stylus" scoped>

@@ -20,8 +20,8 @@ import {
 import {getCartFoods} from '../../Utils/index';
 export default  {
   state: { 
-    // info:{},
-    // ratings:{},
+    info:{},
+    ratings:[],
     // goods:{},
     shop: {}, // 当前商家
     cartFoods:[] //购物车中所有food数组
@@ -40,6 +40,8 @@ export default  {
     [RECEIVE_SHOP](state,{shop={},cartFoods=[]}){
       state.cartFoods = cartFoods;
       state.shop = shop;
+      state.ratings = shop.ratings;
+      state.info = shop.info;
     },
     [RECEIVE_JIA](state,{food}){
       if(food.count){
@@ -117,6 +119,7 @@ export default  {
       //发送异步请求
       //const {latitude,longitude} = state;
       //如果当前id与请求的id相同就不需要重复发请求
+      console.log(id,state.shop.id);
       if(id == state.shop.id){
         return
       }
@@ -144,6 +147,10 @@ export default  {
     //总价格
     totalPrice(state){
       return state.cartFoods.reduce((p,food)=>p + food.count*food.price ,0)
-    }
+    },
+    //满意的评论数量
+    manyi(state){
+      return state.ratings.reduce((p,r)=>p + (r.rateType===0?1:0) ,0)
+    },
   }
 }

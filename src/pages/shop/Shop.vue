@@ -23,6 +23,7 @@ import ShopHeader from '../../components/shopHeader/ShopHeader';
 import {saveCartFoods} from '../../Utils/index';
 import {mapState} from 'vuex';
 export default {
+  name:"shop",
   //import引入的组件需要注入到对象中才能使用
   components: {
     ShopHeader
@@ -61,7 +62,12 @@ export default {
     // this.$store.dispatch("getRatings");
     this.$store.dispatch("getShop",this.id);
     let id = this.id;
-    console.log("shop组件的id",id)
+    //console.log("shop组件的id",id);
+    window.onload = ()=>{};
+    window.addEventListener("unload",()=>{
+      const {shop:{id}, cartFoods } = this.shop;
+      saveCartFoods(id,cartFoods);
+    })
   },
   beforeCreate() {
     
@@ -77,6 +83,7 @@ export default {
     
   }, //生命周期 - 更新之后
   beforeDestroy() {
+    //vue在组件刷新的时候生命周期不会执行
     //将当前商家购物车保存
     const {shop:{id}, cartFoods } = this.shop  // 多层解构
     saveCartFoods(id,cartFoods)

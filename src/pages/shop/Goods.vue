@@ -90,7 +90,8 @@ export default {
   //计算属性 类似于data概念
   computed: {
     ...mapState({
-      goods:state => state.shop.shop.goods || []
+      goods:state => state.shop.shop.goods || [],
+      shop:state => state.shop.shop || {},
     }),
     CurrentIndex(){
 
@@ -111,11 +112,11 @@ export default {
     goods(){
       //监控goods的变化
       //当数据更新了，在dom中渲染后，自动执行该函数
-      console.log("watch====>",this.goods)
+      //console.log("watch====>",this.goods)
       this.$nextTick(()=>{
         console.log(11)
         this.initScroll();
-        console.log("夹断")
+        //console.log("夹断")
         this.initTop();     
       })
     }
@@ -130,7 +131,9 @@ export default {
     },
     initScroll(){
       if (!this.lscroll) {
-        console.log('创建scroll对象')
+       
+        //console.log('创建scroll对象');
+        //console.log(this.$refs.left,this.goods)
         //让手机支持Touch事件
         this.lscroll = new BScroll(this.$refs.left,{
           click:true,
@@ -156,22 +159,29 @@ export default {
           console.log("scrollEnd滑动结束的监听",x,y)
           //console.log(Math.abs(y))
           this.scrollY = Math.abs(y);
-        })
+        });
+        if(this.shop.id !== this.$route.params.id){
+          this.lscroll = null;
+          this.rscroll = null;
+        }
       }else{
         this.lscroll.refresh()
         this.rscroll.refresh()
       }
     },
     initTop(){
-      const tops = [];
-      let top = 0;
-      tops.push(top);
-      let lis = Array.from(this.$refs.rightUl.children);
-      lis.forEach(li=>{
-        top += li.clientHeight;
+      if(!this.tops.length){
+        const tops = [];
+        let top = 0;
         tops.push(top);
-      })
-      this.tops = tops;
+        let lis = Array.from(this.$refs.rightUl.children);
+        lis.forEach(li=>{
+          top += li.clientHeight;
+          tops.push(top);
+        })
+        this.tops = tops;
+      }
+      
     },
     clickItem(i){
       //让右侧列表滑动到指定位置
@@ -189,12 +199,13 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     //console.log(BScroll())
-    console.log("mounted====>",this.goods)
+    //console.log("mounted====>",this.goods)
     //如果数据有了，直接做初始化的操作、
     if(this.goods.length>0){
-        console.log(22)
-        this.initScroll();
-        this.initTop();     
+      console.log(22);
+      
+      this.initScroll();
+      this.initTop();     
     }
     
   },

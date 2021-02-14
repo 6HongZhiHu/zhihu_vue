@@ -4,7 +4,7 @@
       class="shop-nav"
       :style="{backgroundImage: `url(${info.bgImg})`}"
     >
-      <a class="back" @click="$router.replace('./msite')">
+      <a class="back" @click="$router.replace('/msite')">
         <i class="iconfont icon-arrow-left"></i>
       </a>
     </nav>

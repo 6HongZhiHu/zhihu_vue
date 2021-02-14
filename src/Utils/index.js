@@ -1,4 +1,5 @@
 import vue from 'vue';
+import dayjs from 'dayjs';
 export function saveCartFoods(id,cartFoods){
   //根据cartFoods生成包含所有count数量的对象
   let cartCounts = cartFoods.reduce((r,food)=>{
@@ -27,4 +28,9 @@ export function getCartFoods(shop){
     })
   })
   return cartFoods;
+}
+
+//格式化时间
+export function Time(){
+
 }

@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <keep-alive exclude="shop">
+      <router-view></router-view>
+    </keep-alive>
     <FooterGuide v-show="$route.meta.isShowFooter"></FooterGuide>
+
   </div>
 </template>
 

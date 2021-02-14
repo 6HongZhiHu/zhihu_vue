@@ -2,6 +2,7 @@ const path = require('path')
 const px2rem = require('postcss-px2rem') // postcss的一个插件
 
 module.exports = {
+  
   css: { // 添加postcss配置
     loaderOptions: {
       postcss: {

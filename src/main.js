@@ -14,6 +14,7 @@ import i18n from './i18n'
 import "./mock/mock-server";
 import lazyLoad from 'vue-lazyload';
 import loading from '../src/assets/image/loading.gif';
+import dayjs from 'dayjs';
 
 
 Vue.component(Button.name, Button )
@@ -29,13 +30,14 @@ Vue.component("Header",Header)
 Vue.component("Star",Star)
 Vue.component("CartControl",CartControl)
 Vue.component("ShopCart",ShopCart)
+//在vue全局添加dayjs方法
+Vue.prototype.dayjs = dayjs;
 
 Vue.config.productionTip = false
 
 new Vue({
   //所有组件都能看到 $router和$route <router-link> 和 <router-view/>
   router,
-
   store,
   i18n,
   render: h => h(App)

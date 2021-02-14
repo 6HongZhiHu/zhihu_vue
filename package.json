@@ -10,6 +10,7 @@
   "dependencies": {
     "better-scroll": "^2.1.1",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.4",
     "less-loader": "^5.0.0",
     "lib-flexible": "^0.3.2",
     "lodash": "^4.17.20",
